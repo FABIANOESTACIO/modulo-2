@@ -47,14 +47,29 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     }
+     button: {
+        backgroundColor: '#0a5ca8', 
+        paddingVertical: 12,       
+        paddingHorizontal: 20,      
+        borderRadius: 8,            
+        alignItems: 'center',       
+        marginBottom: 16,           
+        width: '100%',               
+    },
+     buttonText: {
+        color: 'white',             // Cor do texto: branco
+        fontWeight: 'bold',         // Texto em negrito
+        fontSize: 16,               // Tamanho médio-grande da fonte
+    },
+        footer: {
+        marginTop: 40,              // Espaço acima do rodapé
+    },
+footerText: {
+        color: '#777',              // Cor do texto: cinza médio
+        fontSize: 14,               // Tamanho pequeno da fonte
+    },
 }
 )}
-buton:beckgroundcollor:'#0a5ca8',
-padingvertical:12,
-padingvertical:12,
-alingthitens:
-borderRadios:
-marginbotton:16,
-width:100%,
+
 
 butontext' fontweigth, fontsize:16
