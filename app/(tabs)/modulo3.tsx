@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
-    StyleSheet
+    ActivityIndicator,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
 
 type Usuario = {
@@ -9,67 +14,85 @@ type Usuario = {
 };
 
 export default function Modulo3() {
-    const [carregando, setCarregando] =useState (false);
-    const [usuarios, setUsuarios] = useState <Usuario[]>([]);
+    const [carregando, setCarregando] = useState(false);
+    const [usuarios, setUsuarios] = useState<Usuario[]>([]);
     const [visivel, setVisivel] = useState(false);
 
-
     const carregarUsuarios = async () => {
-        // se já esta visível, colapsa a lista
-    if(visivel) {
-        setVisivel (false);
-        return;
-    }
-    setCarregando(true);
-    try {
-        const response = await fetch ('https://jsonplaseholder.typicode.com/users');
-        const data = await response.json();
-    setUsuarios (data);
-    setVisivel(true); //torna a lista visivel apos carregar
-    } catch (error){
-        console.error('erro ao carregar usuarios',error);
-    } finally {
-        setCarregando(false)
-    }
+        if (visivel) {
+            setVisivel(false); // Colapsa a lista se já estiver visível
+            return;
+        }
+
+        setCarregando(true);
+        try {
+            const response = await fetch('https://jsonplaceholder.typicode.com/users');
+            const data = await response.json();
+            setUsuarios(data.user);
+            setVisivel(true);
+        } catch (error) {
+            console.error('Erro ao carregar usuários:', error);
+        } finally {
+            setCarregando(false);
+        }
+    };
+
+    return (
+        <ScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.title}>Lista de Usuários</Text>
+
+            <Pressable style={styles.button} onPress={carregarUsuarios}>
+                <Text style={styles.buttonText}>
+                    {visivel ? 'Ocultar Usuários' : 'Carregar Usuários'}
+                </Text>
+            </Pressable>
+
+            {carregando && <ActivityIndicator size="large" color="#0a5ca8" />}
+
+            {visivel && usuarios.map(usuario => (
+                <Text key={usuario.id}>{usuario.name}</Text>
+            ))}
+
+            <View style={styles.footer}>
+                <Text style={styles.footerText}>Exemplo de React Native - Módulo 3</Text>
+            </View>
+        </ScrollView>
+    );
 }
-   
+
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        backgroundColor:'#f9f9f9',
+        backgroundColor: '#f9f9f9',
     },
     title: {
-        fontSize:24,
-        marginBottom:20,
+        fontSize: 24,
+        marginBottom: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-    }
-     button: {
-        backgroundColor: '#0a5ca8', 
-        paddingVertical: 12,       
-        paddingHorizontal: 20,      
-        borderRadius: 8,            
-        alignItems: 'center',       
-        marginBottom: 16,           
-        width: '100%',               
     },
-     buttonText: {
-        color: 'white',             // Cor do texto: branco
-        fontWeight: 'bold',         // Texto em negrito
-        fontSize: 16,               // Tamanho médio-grande da fonte
+    button: {
+        backgroundColor: '#0a5ca8',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginBottom: 16,
+        width: '100%',
     },
-        footer: {
-        marginTop: 40,              // Espaço acima do rodapé
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
-footerText: {
-        color: '#777',              // Cor do texto: cinza médio
-        fontSize: 14,               // Tamanho pequeno da fonte
+    footer: {
+        marginTop: 40,   
     },
-}
-)}
-
-
-butontext' fontweigth, fontsize:16
+    footerText: {
+        color: '#777',
+        fontSize: 14,
+    },
+});
